@@ -9,9 +9,17 @@ import Parkings from './pages/Parkings';
 
 // Configure Amplify from amplify_outputs.json
 import { Amplify } from 'aws-amplify';
-import outputs from '../amplify_outputs.json';
 
-Amplify.configure(outputs);
+// Load config from public folder
+fetch('/amplify_outputs.json')
+  .then(res => res.json())
+  .then(config => {
+    Amplify.configure(config);
+    console.log('✅ Amplify configured from public folder');
+  })
+  .catch(err => {
+    console.error('❌ Failed to load amplify_outputs.json:', err);
+  });
 
 function App() {
   const [currentPage, setCurrentPage] = useState('dashboard');
